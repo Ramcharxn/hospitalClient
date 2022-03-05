@@ -2,13 +2,14 @@ import axios from 'axios'
 import React from 'react'
 import { useState } from 'react'
 
-const Medcinie = ({ medDetails, changeTotal }) => {
+const Medicinie = ({ medDetails, changeTotal, medRequired }) => {
     const [ medReq, setMedReq ] = useState(0)
     const [ itemCost, setItemCost ] = useState(0)
     // const [ itemCostDiscount, setItemCostDiscount ] = useState(0)
     // const [ discount, setDscount ] = useState(0)
     const [ error, setError ] = useState('')
     const [ medAmount, setMedAmount] = useState(medDetails.quantity)
+    const [ bool, setBool ] = useState(false)
 
     // console.log(medAmount)
 
@@ -22,14 +23,16 @@ const Medcinie = ({ medDetails, changeTotal }) => {
             } else {
                 setMedAmount(res.data.quantity)
                 setItemCost(itemCost + medReq*medDetails.price)
+                
                 changeTotal(medReq*medDetails.price)
+                medRequired(medReq)
                 setError('')
             }
             
         })
         .catch(err => console.log(err.message))
 
-        setMedReq(0)
+        setBool(true)
     }
 
     return (
@@ -39,7 +42,7 @@ const Medcinie = ({ medDetails, changeTotal }) => {
             <p>Amount : {medAmount}</p>
             <p>MRP : {medDetails.MRP}</p>
             <p>Tax : {medDetails.tax}</p>
-            <p>price : {medDetails.prce}</p>
+            <p>price : {medDetails.price}</p>
             <form onSubmit={handleSubmit}>
             {/* <select name="cars" id="cars">
                 <option value={0}>none</option>
@@ -47,7 +50,7 @@ const Medcinie = ({ medDetails, changeTotal }) => {
                 <option value={25}>staff</option>
                 <option value={50}>HOD</option>
             </select> */}
-                <input type="number" required value={medReq} onChange={e => setMedReq(e.target.value)} />
+                <input type="number" disabled={bool} required value={medReq} onChange={e => setMedReq(e.target.value)} />
                 <button type="submit">required amount of med</button>
             </form>
             <p>{error}</p>
@@ -57,4 +60,4 @@ const Medcinie = ({ medDetails, changeTotal }) => {
     )
 }
 
-export default Medcinie
+export default Medicinie

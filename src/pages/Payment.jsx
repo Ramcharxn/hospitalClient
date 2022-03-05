@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import axios from 'axios'
-import Medcinie from './Medicine'
+import MedicinePage from './MedicinePage'
+import DiscountPage from './DiscountPage'
 
 export default function Payment() {
 
@@ -15,11 +16,9 @@ export default function Payment() {
   const [ city, setCity ] = useState('')
   const [ state, setState ] = useState('')
   const [ country, setCountry ] = useState('')
+  const [ details, setDetails ] = useState(0)
+  const [ medRequired, setMedRequired] = useState('')
 
-  // med details
-  const [ medName, setMedName ] = useState('')
-  const [ medArray, setMedArray ] = useState([])
-  const [ totalCost, setTotalCost ] = useState(0)
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -40,14 +39,6 @@ export default function Payment() {
     .catch(err => setStatus(err.message))
   }
 
-  const MedSubmit = (e) => {
-    e.preventDefault()
-
-    axios.post('http://localhost:5000/getMed',{medName})
-      .then(res => setMedArray(arr => [...arr, res.data]))
-      .catch(err => console.log(err.message))
-  }
-
   return (
     <div>
       <h1>Payment</h1>
@@ -58,35 +49,32 @@ export default function Payment() {
         <button type="submit">get data</button>
       </form>
 
-      <input type="text"  value={name} onChange={e => setName(e.target.value)} placeholder="Name" />
-      <input type="email"  value={email} onChange={e => setEmail(e.target.value)} placeholder="email" />
-      <input type="text"  value={address} onChange={e => setAddress(e.target.value)} placeholder="address" />
-      <input type="text"  value={sex} onChange={e => setSex(e.target.value)} placeholder="sex" />
-      <input type="text"  value={city} onChange={e => setCity(e.target.value)} placeholder="city" />
-      <input type="text"  value={state} onChange={e => setState(e.target.value)} placeholder="state" />
-      <input type="text"  value={country} onChange={e => setCountry(e.target.value)} placeholder="country" />
+      <input type="text" value={name} onChange={e => setName(e.target.value)} placeholder="Name" />
+      <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="email" />
+      <input type="text" value={address} onChange={e => setAddress(e.target.value)} placeholder="address" />
+      <input type="text" value={sex} onChange={e => setSex(e.target.value)} placeholder="sex" />
+      <input type="text" value={city} onChange={e => setCity(e.target.value)} placeholder="city" />
+      <input type="text" value={state} onChange={e => setState(e.target.value)} placeholder="state" />
+      <input type="text" value={country} onChange={e => setCountry(e.target.value)} placeholder="country" />
       
       <p>{status}</p>
 
 
-      {/* Medicine fields */}
-      <form onSubmit={MedSubmit}>
-        <input type="text" value={medName} required placeholder="Medicine name" onChange={e => setMedName(e.target.value)} />
-        <button type="submit">get Details</button>
-      </form>
+      <MedicinePage
+        Total={total => setDetails(total)}
+        medReq={med => setMedRequired(med)}
+      />
 
-      {
-      //  console.log(medArray[0][0]._id)
-        medArray.map(m => (
-          <Medcinie
-            key={m[0]._id}
-            medDetails={m[0]}
-            changeTotal={total => setTotalCost(totalCost + total)}
-          />
-        ))
-      }
+{/* <MedicinePage
+        Total={total => setDetails(total)}
+      /> */}
 
-      <p>Total cost:  {totalCost}</p>
+      { console.log('****',details) }
+      { console.log('medicinie req',medRequired) }
+
+      TotalCost : {details[0]}
+
+      <DiscountPage details={details[1]} medReq={medRequired} />
 
     </div>
   )

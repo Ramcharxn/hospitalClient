@@ -13,7 +13,7 @@ export default function CreateMed() {
   const handleSubmit = (e) => {
     e.preventDefault()
 
-    axios.post('http://localhost:5000/medicine',{medName, expDate, quantity, MRP, tax, price})
+    axios.post('http://localhost:5000/medicine',{medName, expDate, quantity, MRP, tax, price: parseFloat(MRP)+parseFloat(tax)})
     .then(
       setMedName(''),
       setExpDate(''),
@@ -32,10 +32,10 @@ export default function CreateMed() {
         <form onSubmit={handleSubmit}>
           <input type="text" required placeholder='Medcinie name' value={medName} onChange={e => setMedName(e.target.value)} />
           <input type="date" placeholder='expDate' value={expDate} onChange={e => setExpDate(e.target.value)} />
-          <input type="number" placeholder='quantity' value={quantity} onChange={e => setQuantity(e.target.value)} />
-          <input type="number" placeholder='MRP' value={MRP} onChange={e => setMRP(e.target.value)} />
-          <input type="number" placeholder='tax' value={tax} onChange={e => setTax(e.target.value)} />
-          <input type="number" placeholder='price' value={price} onChange={e => setPrice(e.target.value)} />
+          Quantity: <input type="number" placeholder='quantity' value={quantity} onChange={e => setQuantity(e.target.value)} />
+          MRP: <input type="number" placeholder='MRP' value={MRP} onChange={e => setMRP(e.target.value)} />
+          Tax:<input type="number" placeholder='tax' value={tax} onChange={e => setTax(e.target.value)} />
+          Price:<input type="number" placeholder='price' value={parseFloat(MRP)+parseFloat(tax)} />
           <button type="submit">Create</button>
         </form>
     </div>
