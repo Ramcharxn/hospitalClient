@@ -1,10 +1,13 @@
 import React, { useEffect } from 'react'
 
-export default function Discount({medDetails, index, discount, medReq, totalAfterDiscount}) {
+export default function Discount({medDetails, index, discount, medReq, totalAfterDiscount, dummy}) {
 
     // console.log('discount', discount)
     const discountAmount = (medDetails.price*medReq*discount/100)
     const afterDiscount = medDetails.price*medReq - discountAmount
+    
+    dummy(medDetails.price*medReq)
+
     useEffect(() => {
       totalAfterDiscount(afterDiscount)
     },[discount])

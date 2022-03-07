@@ -9,13 +9,15 @@ const MedicinePage = ({ Total, medReq }) => {
   const [ medArray, setMedArray ] = useState([])
   const [ medRequired, setMedRequired ] = useState([])
   const [ totalCost, setTotalCost ] = useState(0)
-
+  
+  var deleted = 0
+  
   const MedSubmit = (e) => {
     e.preventDefault()
-
+    
     axios.post('http://localhost:5000/getMed',{medName})
-      .then(res => {
-        setMedArray(arr => [...arr, res.data])
+    .then(res => {
+      setMedArray(arr => [...arr, res.data])
       })
       .catch(err => console.log(err.message))
 
@@ -33,10 +35,14 @@ useEffect(() => {
 
 const remove = (e, i) => {
   e.preventDefault()
-  medArray.splice(i+1,1)
+  console.log('%%%%%%%%%%%%',i)
+  deleted = medArray.splice(i,1)
+  console.log('^^^^^^^^^^^^',deleted[0][0].price)
   setMedArray(medArray)
+  console.log('*****###########',medRequired[i])
+  setTotalCost(totalCost - deleted[0][0].price*medRequired[i])
 
-  Total([totalCost, medArray])
+  Total([totalCost - deleted[0][0].price*medRequired[i], medArray])
   medReq(medRequired)
   console.log('#######',medArray)
 }
@@ -64,15 +70,18 @@ const remove = (e, i) => {
       //  console.log(medArray[0][0]._id)
         medArray.map((m, i) => (
           <div key={i}>
+            {console.log('!@#!@#@!#',m[0])}
           <Medicinie
             key={i}
+            id = {i}
             // key={m[0]._id}
             medDetails={m[0]}
             // changeTotal={total => setTotalCost(totalCost + total*m[0].price)}
             changeTotal={total => setTotalCost(totalCost + total)}
             medRequired={required => setMedRequired(arr => [...arr,required])}
           />
-          <button onClick={(e, i) => remove(e, i)} >delete</button>
+          {/* { console.log(i) } */}
+          <button value={i} onClick={(e) => remove(e, i)} >delete</button>
           </div>
           
         ))

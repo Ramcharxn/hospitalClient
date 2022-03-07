@@ -22,7 +22,7 @@ const Medicinie = ({ medDetails, changeTotal, medRequired }) => {
                 setError(res.data)
             } else {
                 setMedAmount(res.data.quantity)
-                setItemCost(itemCost + medReq*medDetails.price)
+                setItemCost(medReq*medDetails.price)
                 
                 changeTotal(medReq*medDetails.price)
                 medRequired(medReq)

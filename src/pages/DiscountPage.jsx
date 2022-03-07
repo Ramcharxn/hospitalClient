@@ -3,14 +3,22 @@ import Discount from './Discount'
 
 export default function DiscountPage({details, medReq}) {
     const [ service, setService ] = useState('')
+    const [ dummy, setDummy ] = useState(0)
     const [ relation, setRelation ] = useState('')
     const [ finalAmount, setFinalAmount ] = useState(0)
 
     // console.log('Discount',details)
+    console.log('%%%%%%%%%%%%$444',finalAmount, dummy)
 
     const handleChange = (e) => {
       setService(e.target.value)
-      setFinalAmount(0)
+      console.log(e.target.value)
+      console.log(finalAmount)
+      console.log(dummy)
+      console.log((finalAmount*(e.target.value)/100))
+      // setFinalAmount(finalAmount - (finalAmount*(e.target.value)/100) - dummy)
+      setFinalAmount(finalAmount)
+      // setFinalAmount(0)
     }
 
     
@@ -70,6 +78,7 @@ export default function DiscountPage({details, medReq}) {
               medReq={medReq[i]}
               index={i}
               discount={service}
+              dummy={val => setDummy(val)}
               totalAfterDiscount={val => setFinalAmount(finalAmount + val)}
               /> 
           ))) : null
