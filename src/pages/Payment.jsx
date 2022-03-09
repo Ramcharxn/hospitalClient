@@ -2,6 +2,8 @@ import React, {useState} from 'react'
 import axios from 'axios'
 import MedicinePage from './MedicinePage'
 import DiscountPage from './DiscountPage'
+import MedPage from './MedPage'
+import PaymentMain from './PaymentMain'
 
 export default function Payment() {
 
@@ -60,22 +62,36 @@ export default function Payment() {
       <p>{status}</p>
 
 
-      <MedicinePage
+      {/* <MedPage /> */}
+
+
+      <PaymentMain />
+
+
+      {/* <MedicinePage
         Total={total => setDetails(total)}
         medReq={med => setMedRequired(med)}
-      />
+      /> */}
+
+
+      {/* { console.log('****',details) }
+      { console.log('medicinie req',medRequired) }
+
+      TotalCost : {details[0]} */}
+
+      {/* <DiscountPage details={details[1]} medReq={medRequired} /> */}
+
+
+
+
+
+
+
+
 
 {/* <MedicinePage
         Total={total => setDetails(total)}
       /> */}
-
-      { console.log('****',details) }
-      { console.log('medicinie req',medRequired) }
-
-      TotalCost : {details[0]}
-
-      <DiscountPage details={details[1]} medReq={medRequired} />
-
     </div>
   )
 }
