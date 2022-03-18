@@ -1,9 +1,9 @@
-import Header from './components/Header';
+// import Header from './components/Header';
 import Main from './components/Main';
 import Basket from './components/Basket';
 import { useState } from 'react';
 import axios from 'axios'
-function PaymentMain() {
+function PaymentMain({ UID, onSub, error }) {
 
   const[ products, setProducts ] =  useState([])
   const[ medName, setMedName ] =  useState('')
@@ -12,15 +12,20 @@ function PaymentMain() {
   const handleSubmit = (e) => {
     e.preventDefault()
     axios.post('http://localhost:5000/getMed',{medName})
-    .then(res => setProducts(arr => [...arr,res.data[0]]))
+    // .then(res => setProducts(arr => [...arr,res.data[0]]))
+    .then(res => (
+      res.data === 'No such medicine' ? error(res.data) : setProducts(arr => [...arr,res.data[0]])
+    ))
 
     setMedName('')
   }
 
   console.log(products)
+  console.log(UID)
+
+  const [cartItems, setCartItems] = useState([]);
 
  
-  const [cartItems, setCartItems] = useState([]);
 
   const onAdd = (product, addVal) => {
     // e.preventDefault()
@@ -40,35 +45,64 @@ function PaymentMain() {
     setCartItems(cartItems.filter((x) => x._id !== product._id));
     setProducts(products.filter((x) => x._id !== product._id))
   };
-  return (
-    <div className="App">
 
+  console.log('cartItems',cartItems)
+
+  const MedDetails = (e) => {
+    e.preventDefault()
+
+    axios.post('http://localhost:5000/checkout',{UID, cartItems, service})
+    .then(res => (error(res.data), onSub()))
+    .catch(err => console.log(err.message))
+
+    
+  }
+
+
+  return (
+    <div className="PaymentMain">
+
+      {/* <div className="inputBoxArea"></div> */}
+
+      {/* <h1>UID : {UID}</h1> */}
+
+      <div className='Block1'>
       <form onSubmit={handleSubmit}>
-        <input type="text" value={medName} onChange={e => setMedName(e.target.value)} />
-        <button type="submit">search</button>
+        <input placeholder='Medicine Name' type="text" value={medName} onChange={e => setMedName(e.target.value)} />
+        <button className='btn' type="submit">search</button>
       </form>
 
-      {/* <Header countCartItems={cartItems.length}></Header> */}
-      <select value={service} onChange={e => setService(e.target.value)}>
-        <option value="0">None</option>
-        <option value="10">Transport</option>
-        <option value="20">staff</option>
-        <option value="30">HOD</option>
-        <option value="40">student</option>
-      </select>
-
-      {console.log(service)}
-
-
-      <div className="row">
-        <Main products={products} discount={service} onAdd={onAdd} onRemove={onRemove} ></Main>
-        <Basket
-          discount={service}
-          cartItems={cartItems}
-          onAdd={onAdd}
-          onRemove={onRemove}
-        ></Basket>
+      <Basket
+        discount={service}
+        cartItems={cartItems}
+        onAdd={onAdd}
+        onRemove={onRemove}
+      ></Basket>
       </div>
+
+      {/* <Header countCartItems={cartItems.length}></Header> */}
+
+      <form onSubmit={MedDetails}>
+        <label>Service : </label>
+        <select className='selectBox' value={service} onChange={e => setService(e.target.value)}>
+          <option value="0">None</option>
+          <option value="10">Transport</option>
+          <option value="20">staff</option>
+          <option value="30">HOD</option>
+          <option value="40">student</option>
+        </select>
+
+        {console.log(service)}
+
+
+        <div className="row">
+          <Main products={products} discount={service} onAdd={onAdd} onRemove={onRemove} ></Main>
+        </div>
+        
+        <button className='btn' type="submit">CheckOut</button>
+      </form>
+
+      
     </div>
   );
 }

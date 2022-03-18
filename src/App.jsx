@@ -5,6 +5,7 @@ import Payment from "./pages/Payment";
 import CreateUser from "./pages/CreateUser.jsx";
 import NoPage from "./pages/NoPage";
 import CreateMed from "./pages/CreateMed";
+import './App.css'
 
 export default function App() {
   return (

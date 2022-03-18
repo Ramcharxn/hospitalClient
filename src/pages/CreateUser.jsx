@@ -9,7 +9,7 @@ export default function CreateUser() {
   const [ phoneNum, setPhoneNum ] = useState('')
   const [ email, setEmail ] = useState('')
   const [ address, setAddress ] = useState('')
-  const [ sex, setSex ] = useState('')
+  const [ sex, setSex ] = useState('male')
   const [ city, setCity ] = useState('')
   const [ state, setState ] = useState('')
   const [ country, setCountry ] = useState('')
