@@ -108,10 +108,6 @@ export default function Payment() {
         </div>
       </div>
 
-
-      {/* <MedPage /> */}
-
-
       {
         status === 'display' ?
           <PaymentMain
@@ -127,37 +123,13 @@ export default function Payment() {
               setSex(''),
               setCity(''),
               setState(''),
-              setCountry(''))
+              setCountry(''),
+              setStatus(''))
             }
           />
           : null
       }
 
-
-      {/* <MedicinePage
-        Total={total => setDetails(total)}
-        medReq={med => setMedRequired(med)}
-      /> */}
-
-
-      {/* { console.log('****',details) }
-      { console.log('medicinie req',medRequired) }
-
-      TotalCost : {details[0]} */}
-
-      {/* <DiscountPage details={details[1]} medReq={medRequired} /> */}
-
-
-
-
-
-
-
-
-
-      {/* <MedicinePage
-        Total={total => setDetails(total)}
-      /> */}
     </div>
   )
 }

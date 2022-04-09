@@ -1,21 +1,38 @@
 // import Header from './components/Header';
 import Main from './components/Main';
 import Basket from './components/Basket';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { useReactToPrint } from 'react-to-print'
 import axios from 'axios'
 function PaymentMain({ UID, onSub, error }) {
 
-  const[ products, setProducts ] =  useState([])
-  const[ medName, setMedName ] =  useState('')
-  const[ service, setService ] =  useState(0)
+  const [products, setProducts] = useState([])
+  const [medName, setMedName] = useState('')
+  const [service, setService] = useState(0)
+  const [cartItems, setCartItems] = useState([]);
+  const [allMed, setAllMed] = useState([]);
+  const [display, setDisplay] = useState(false)
+
+  const componentRef = useRef()
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current
+  })
+
+  useEffect(() => {
+    axios.get('http://localhost:5000/getAllMed')
+      .then(res => setAllMed(res.data))
+      .catch(err => console.log(err.message))
+  }, []);
+
+  console.log('all medsss', allMed)
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    axios.post('http://localhost:5000/getMed',{medName})
-    // .then(res => setProducts(arr => [...arr,res.data[0]]))
-    .then(res => (
-      res.data === 'No such medicine' ? error(res.data) : setProducts(arr => [...arr,res.data[0]])
-    ))
+    axios.post('http://localhost:5000/getMed', { medName })
+      // .then(res => setProducts(arr => [...arr,res.data[0]]))
+      .then(res => (
+        res.data === 'No such medicine' ? error(res.data) : setProducts(arr => [...arr, res.data[0]])
+      ))
 
     setMedName('')
   }
@@ -23,9 +40,6 @@ function PaymentMain({ UID, onSub, error }) {
   console.log(products)
   console.log(UID)
 
-  const [cartItems, setCartItems] = useState([]);
-
- 
 
   const onAdd = (product, addVal) => {
     // e.preventDefault()
@@ -46,16 +60,16 @@ function PaymentMain({ UID, onSub, error }) {
     setProducts(products.filter((x) => x._id !== product._id))
   };
 
-  console.log('cartItems',cartItems)
+  console.log('cartItems', cartItems)
 
   const MedDetails = (e) => {
     e.preventDefault()
 
-    axios.post('http://localhost:5000/checkout',{UID, cartItems, service})
-    .then(res => (error(res.data), onSub()))
-    .catch(err => console.log(err.message))
+    axios.post('http://localhost:5000/checkout', { UID, cartItems, service })
+      .then(res => (error(res.data), onSub()))
+      .catch(err => console.log(err.message))
 
-    
+
   }
 
 
@@ -67,17 +81,48 @@ function PaymentMain({ UID, onSub, error }) {
       {/* <h1>UID : {UID}</h1> */}
 
       <div className='Block1'>
-      <form onSubmit={handleSubmit}>
-        <input placeholder='Medicine Name' type="text" value={medName} onChange={e => setMedName(e.target.value)} />
-        <button className='btn' type="submit">search</button>
-      </form>
+        <form onSubmit={handleSubmit}>
+          <div>
+            <input
+              placeholder='Medicine Name'
+              type="text" value={medName}
+              onChange={e => setMedName(e.target.value)}
+              onClick={() => setDisplay(!display)}
+            // onClick={setDisplay(!display)}
+            />
 
-      <Basket
-        discount={service}
-        cartItems={cartItems}
-        onAdd={onAdd}
-        onRemove={onRemove}
-      ></Basket>
+            {console.log('medNameeeeeeeee', medName)}
+            {
+              medName !== '' && display &&
+              // <select className='selectBox' value={medName} onChange={e => setMedName(e.target.value)}>
+              <div>
+                {allMed.map((m, i) => {
+                  if (m.medName.includes(medName)) {
+                    // if(m.medName.startsWith(medName)){
+                    return <div
+                      onClick={() => (setMedName(m.medName), setDisplay(!display))}
+                      key={i}
+                    >
+                      <p style={{ cursor: 'pointer' }}>{m.medName}</p>
+                    </div>
+                  }
+                }
+                )}
+              </div>
+
+            }
+
+          </div>
+
+          <button className='btn' type="submit">search</button>
+        </form>
+
+        <Basket
+          discount={service}
+          cartItems={cartItems}
+          onAdd={onAdd}
+          onRemove={onRemove}
+        ></Basket>
       </div>
 
       {/* <Header countCartItems={cartItems.length}></Header> */}
@@ -93,16 +138,15 @@ function PaymentMain({ UID, onSub, error }) {
         </select>
 
         {console.log(service)}
-
-
-        <div className="row">
+        
+        <div ref={componentRef} className="row">
           <Main products={products} discount={service} onAdd={onAdd} onRemove={onRemove} ></Main>
         </div>
-        
-        <button className='btn' type="submit">CheckOut</button>
+
+        <button onClick={handlePrint} className='btn' type="submit">CheckOut</button>
       </form>
 
-      
+
     </div>
   );
 }

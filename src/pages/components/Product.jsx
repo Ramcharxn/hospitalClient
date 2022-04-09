@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 export default function Product(props) {
   const { product, onAdd, onRemove, discount } = props;
@@ -33,7 +33,7 @@ export default function Product(props) {
       <td>{((quantity * product.price) - [(quantity * product.price)*discount/100]).toFixed(2)}rs</td>
           
       <td>
-      <button onClick={() => onRemove(product)} className="remove">
+      <button style={{ cursor: 'pointer' }} onClick={() => onRemove(product)} className="remove">
         x
       </button>  
       </td>   
