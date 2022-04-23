@@ -38,19 +38,6 @@ function StoreStock({ UID, onSub, error }) {
   console.log("ALL MEDICINE: ",allMed)
   console.log("onRequest", requestQuantity)
 
-  const onAdd = (product, addVal) => {
-    const exist = cartItems.find((x) => x._id === product._id);
-    if (exist) {
-      setCartItems(
-        cartItems.map((x) =>
-          x._id === product._id ? { ...exist, requiredQty: addVal } : x
-        )
-      );
-    } else {
-      setCartItems([...cartItems, { ...product, requiredQty: 1 }]);
-    }
-  };
-
   const onRemove = (product) => {
     setCartItems(cartItems.filter((x) => x._id !== product._id));
     setProducts(products.filter((x) => x._id !== product._id))
@@ -61,11 +48,11 @@ function StoreStock({ UID, onSub, error }) {
 
   const medRequest = (e) => {
     e.preventDefault()
-    axios.post('http://localhost:5000/medRequest', { cartItems })
-      .then(res => ( setCartItems([]), setStatus(res.data) ))
+    axios.post('http://localhost:5000/medRequest', { products })
+      .then(res => ( setStatus(res.data) ))
       .catch(err => console.log(err.message))
   }
-
+// setCartItems([])
   // const handleFilter = () => {
   //   setApplyFilter(true)
   // }
@@ -188,7 +175,7 @@ function StoreStock({ UID, onSub, error }) {
 
       <form style ={{width:'50vw',backgroundColor:'yellow'}} onSubmit={medRequest}>
         <div className="row">
-          <StockMain products={products} onAdd={onAdd} onRemove={onRemove} onRequest={onRequest} ></StockMain>
+          <StockMain products={products} onRemove={onRemove} onRequest={onRequest} ></StockMain>
         </div>
         <button className='btn' type="submit">Request</button>
       </form>

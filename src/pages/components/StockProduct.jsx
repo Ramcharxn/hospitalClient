@@ -1,18 +1,24 @@
 import React, { useState } from 'react';
 
 export default function StockProduct(props) {
-  const { product, onAdd, onRemove, discount, onRequest } = props;
+  const { product, onRemove, discount, onRequest } = props;
   const [quantity, setQuantity] = useState('')
   //const [requestQuantity, setRequestQuantity] = useState(0)
+product.checked = false
+const handleClick = (e) => {
+  product.checked = e.target.checked
+  console.log(product.checked)
+}
 
   return (
     <tr>
+      <input type="checkbox" onClick={handleClick} />
       <td>{product.medName}</td>
       <td>{product.expDate.split('T')[0].split("-").reverse().join("-")}</td>
       <td>{product.quantity}</td> 
       <td>
         {/* <input type="number" min="0" onChange={e=> setRequestQuantity(e.target.value)}/> */}
-        <input required min='0' className='ProdInputBox' type="number" onChange={e => (onAdd(product, e.target.value), onRequest)} />
+        <input required min='0' className='ProdInputBox' type="number" onChange={e => (product.requiredQty = e.target.value)} />
         {/* <input type="number" min="0" onChange={onRequest}/> */}
       </td>
 
