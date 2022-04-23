@@ -7,6 +7,8 @@ import ReturnPage from "./pages/ReturnPage";
 import CreateUser from "./pages/CreateUser.jsx";
 import NoPage from "./pages/NoPage";
 import CreateMed from "./pages/CreateMed";
+import StoreStock from "./pages/StoreStock"
+import HigherOff from "./pages/HigherOff"
 
 import './App.css'
 
@@ -16,6 +18,8 @@ export default function App() {
     <Navbar />
       <Routes>
           <Route path="/" element={<Header />} />
+          <Route path='/store-stock' element={<StoreStock />} />
+          <Route path='/higherOfficial' element={<HigherOff />} />
           <Route path='/OpPharmacyBilling' element={<Payment />} />
           <Route path='/return' element={<ReturnPage />} />
           {/* <Route path='/OpPharmacyBilling' element={<OpPharmacyBilling />} /> */}
