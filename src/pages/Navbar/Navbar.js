@@ -13,7 +13,6 @@ function Navbar() {
 
     const handleClick = (e) => {
         setAnchorEl(e.currentTarget);
-        console.log(e.currentTarget);
     };
 
     const handleClose = () => {
@@ -49,6 +48,7 @@ function Navbar() {
                         <MenuItem onClick={handleClose} ><Link to='/higherOfficial'>higher Official</Link></MenuItem>
                         <MenuItem onClick={handleClose} ><Link to='/OpPharmacyBilling'> OP Pharmacy Billing </Link> </MenuItem>
                         <MenuItem onClick={handleClose} ><Link to='/return'>IP Drug Returns</Link></MenuItem>
+                        <MenuItem onClick={handleClose} ><Link to='/main_store'>Store</Link></MenuItem>
                         <MenuItem onClick={handleClose} >GRN (Goods Receiving Note)</MenuItem>
                         <MenuItem onClick={handleClose} >Branch Issues</MenuItem>
                         <MenuItem onClick={handleClose} >Close Shift</MenuItem>
