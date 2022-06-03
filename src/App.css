@@ -1,6 +1,7 @@
 *{
     margin: 0;
     padding: 0;
+    font-family: 'Roboto', sans-serif;
   }
   /* body{
     background-color: rgb(255, 245, 227);
@@ -20,7 +21,7 @@
     padding-top: 20px;
     border-top: 2px solid orange;
   }
-  .Payment .heading{
+  .heading{
     color: orange;
     font-size: 30px;
   }
@@ -52,9 +53,9 @@
     height: 30px;
     border: none;
     box-sizing: content-box;
-    box-shadow: 2px 2px 5px #cacaca, 0px 0px 0px #cacaca, 0px 0px 0px #cacaca;
+    box-shadow: 2px 2px 5px #848484, 0px 0px 0px #cacaca, 0px 0px 0px #cacaca;
   }
-  .Payment .btn{
+  .btn{
     width: 100px;
     height: 30px;
     background: rgb(226, 147, 0);
@@ -121,4 +122,84 @@
   .PaymentMain .BasketTP{
     font-size: 20px;
     color: rgb(197, 128, 0);
+  }
+
+  /* Stock Main */
+  .StoreStock{
+      padding: 0 40px;
+      padding-top: 20px;
+      border-top: 2px solid orange;
+  }
+
+  .StoreStock .Block{
+    display: flex;
+  }
+
+  .StoreStock .Block1{
+    margin: 30px 0;
+  }
+
+  .StoreStock .MedList{
+    background-color: rgb(255, 218, 149);
+    width: 260px;
+    margin: 10px 0;
+    padding: 15px;
+  }
+  .statusStore{
+    margin-left: 40px;
+    font-size: large;
+  }
+
+  .StoreStock .InputBox{
+    width: 150px;
+    padding-left: 5px;
+    padding-right: 5px;
+    height: 30px;
+    border: none;
+    box-sizing: content-box;
+    box-shadow: 2px 2px 5px #848484, 0px 0px 0px #cacaca, 0px 0px 0px #cacaca;
+  }
+
+  .StoreStock .Box{
+    margin-bottom: 15px;
+    margin-right: 20px;
+  }
+
+  .StoreStock .btn2{
+    margin-top: 30px;
+  }
+
+  .StoreMain{
+    margin-top: 30px;
+  }
+  .StoreMain .remove{
+    background: none;
+    border: none;
+    font-size: 30px;
+    color: orange;
+  }
+  .StoreMain tr:first-child .remove{
+    background: none;
+    border: none;
+    font-size: 30px;
+    color: white;
+  }
+  .StoreMain th{
+    padding: 5px 0;
+  }
+  .StoreMain td, .StoreMain th{
+    width: 150px;
+    border: 1px solid #dddddd;
+    text-align: center;
+  }
+  
+  .StoreMain tr:first-child{
+    background-color: rgb(255, 210, 126);
+  }
+  .StoreMain tr{
+    background-color: rgb(255, 255, 255);
+  }
+  .StoreMain .CheckBox{
+    width: 20px;
+    height: 20px;
   }

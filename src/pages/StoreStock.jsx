@@ -3,7 +3,9 @@ import StockMain from './components/StockMain';
 import Basket from './components/Basket';
 import { useState, useEffect } from 'react';
 import axios from 'axios'
+
 function StoreStock({ UID, onSub, error }) {
+
 
   const [requestQuantity, setRequestQuantity] = useState(0)
 
@@ -24,6 +26,14 @@ function StoreStock({ UID, onSub, error }) {
       .catch(err => console.log(err.message))
   }, []);
 
+  const statusReset = () => {
+    setStatus('')
+  }
+
+  if(status === "done"){
+    setTimeout(statusReset, 5000);
+  }
+
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -34,8 +44,8 @@ function StoreStock({ UID, onSub, error }) {
     setMedName('')
   }
 
-  console.log('PRODUCTS',products)
-  console.log("ALL MEDICINE: ",allMed)
+  console.log('PRODUCTS', products)
+  console.log("ALL MEDICINE: ", allMed)
   console.log("onRequest", requestQuantity)
 
   const onRemove = (product) => {
@@ -44,146 +54,140 @@ function StoreStock({ UID, onSub, error }) {
   };
 
   console.log('cartItems', cartItems)
-  
+
 
   const medRequest = (e) => {
     e.preventDefault()
     axios.post('http://localhost:5000/medRequest', { products })
-      .then(res => ( setStatus(res.data) ))
+      .then(res => (setStatus(res.data),setProducts([])))
       .catch(err => console.log(err.message))
   }
-// setCartItems([])
-  // const handleFilter = () => {
-  //   setApplyFilter(true)
-  // }
-
-
-  // const handleRequest = (e) => {
-  //   e.preventDefault()
-
-  //   axios.post('http://localhost:5000/medicine',{medName, expDate, quantity, MRP, tax, price: parseFloat(MRP)+parseFloat(tax)})
-  //   .then(
-  //     setMedName(''),
-  //     setExpDate(''),
-  //     setQuantity(0),
-  //     setMRP(0),
-  //     setTax(0),
-  //     setPrice(0),
-  //   )
-  //   .catch(err => console.log(err.message))
-  // }
 
   const onRequest = (e) => {
-    console.log("lollll",e.target.value);
+    console.log("lollll", e.target.value);
     setRequestQuantity(e.target.value)
   };
 
-  console.log('cartItems',cartItems)
+  console.log('cartItems', cartItems)
 
 
   return (
-      <div >
+    <div >
 
-    <div className="PaymentMain">
-      <div style ={{width:'50vw',backgroundColor:'green'}} className='Block1'>
-        <form>
-        <div>
-          <input
-            placeholder='Medicine Name'
-            type="text" value={medName}
-            onChange={e => setMedName(e.target.value)}
-            onClick={() => setDisplay(!display)}
-          />
+      <div className="StoreStock">
+        <h1 className='heading'>Store Stock</h1>
 
-{
-            medName == '' && display && quantityFilter!=0 && 
+        <div className="Block">
+          <div className='Block1'>
+            <form>
               <div>
-                {
-                allMed.map((m, i) => {
-                if (m.quantity<quantityFilter && i<5) {
+                <div className='Box'>
+                <label>Medicine Name: </label>
+                <input
+                  className='InputBox'
+                  placeholder='Name'
+                  type="text" value={medName}
+                  onChange={e => setMedName(e.target.value)}
+                  onClick={() => setDisplay(!display)}
+                />
+                </div>
 
-                  return <div
-                    onClick={() => ( setMedName(m.medName), setDisplay(!display) )}
-                    key={i}
-                  >
-                    <span>{m.medName}</span>
-                  </div>
-                }
-              }
-              )
-              
-              }
+                <pre className='Box'>
+                  <label>Quantity Filter    : </label>
+                  <input className='InputBox' type="number" placeholder='amount' min="0" onChange={e => setQuantityFilter(e.target.value)} />
+                </pre>
+
+                <div className='displayAllMeds'>
+                  {
+                    medName == '' && display && quantityFilter != 0 &&
+                    <div>
+                      {
+                        allMed.map((m, i) => {
+                          if (m.quantity < quantityFilter && i < 5) {
+
+                            return <div className='MedList'
+                              onClick={() => (setMedName(m.medName), setDisplay(!display))}
+                              key={i}
+                            >
+                              <span className='eachMeds'>{m.medName}</span>
+                            </div>
+                          }
+                        }
+                        )
+
+                      }
+                    </div>
+
+                  }
+
+
+                  {
+                    medName == '' && display && quantityFilter == 0 &&
+                    <div>
+                      {
+                        allMed.map((m, i) => {
+                          if (m.medName.includes(medName) && i < 5) {
+
+                            return <div className='MedList'
+                              onClick={() => (setMedName(m.medName), setDisplay(!display))}
+                              key={i}
+                            >
+                              <span className='eachMeds'>{m.medName}</span>
+                            </div>
+                          }
+                        }
+                        )
+
+                      }
+                    </div>
+
+                  }
+
+
+                  {
+                    medName !== '' && display && quantityFilter == 0 &&
+                    <div>
+                      {allMed.map((m, i) => {
+                        if (m.medName.includes(medName) && i < 5) {
+                          return <div className='MedList'
+                            onClick={() => (setMedName(m.medName), setDisplay(!display))}
+                            key={i}
+                          >
+                            <span className='eachMeds'>{m.medName}</span>
+                          </div>
+                        }
+                      }
+                      )}
+                    </div>
+                  }
+                </div>
+
+
+
+
               </div>
+              <button className='btn' type="submit" onClick={handleSubmit}>search</button>
+            </form>
+          </div>
 
-}
+          {/* <input type="date" placeholder='expDate' value={expDateFilter} onChange={e => setExpDateFilter(e.target.value)} />
+ 
+        <button className='btn' type="submit" onClick={handleFilter}>Apply Filter</button> */}
 
-
-        {
-            medName == '' && display && quantityFilter==0 &&
-              <div>
-                {
-                allMed.map((m, i) => {
-                if (m.medName.includes(medName) && i<5) {
-
-                  return <div
-                    onClick={() => ( setMedName(m.medName), setDisplay(!display) )}
-                    key={i}
-                  >
-                    <span>{m.medName}</span>
-                  </div>
-                }
-              }
-              )
-              
-              }
+          <div className="Block2">
+            <form onSubmit={medRequest}>
+              <div className="row">
+                <StockMain products={products} onRemove={onRemove} onRequest={onRequest} ></StockMain>
               </div>
-
-          }
-
-
-          {
-            medName !== '' && display && quantityFilter==0 &&
-              <div>
-                {allMed.map((m, i) => {
-                if (m.medName.includes(medName) && i<5) {
-                  return <div
-                    onClick={() => ( setMedName(m.medName), setDisplay(!display) )}
-                    key={i}
-                  >
-                    <span>{m.medName}</span>
-                  </div>
-                }
-              }
-              )}
-              </div>
-          }
-
-
-
-
+              <button className='btn btn2' type="submit">Request</button>
+            </form>
+          </div>
         </div>
-          <button className='btn' type="submit" onClick={handleSubmit}>search</button>
-        </form>
+
+
       </div>
 
-      <label>Quantity Filter</label>
-      <input type="number" min="0" onChange={e=> setQuantityFilter(e.target.value)}/>
-
-      {/* <input type="date" placeholder='expDate' value={expDateFilter} onChange={e => setExpDateFilter(e.target.value)} />
- 
-      <button className='btn' type="submit" onClick={handleFilter}>Apply Filter</button> */}
-
-      <form style ={{width:'50vw',backgroundColor:'yellow'}} onSubmit={medRequest}>
-        <div className="row">
-          <StockMain products={products} onRemove={onRemove} onRequest={onRequest} ></StockMain>
-        </div>
-        <button className='btn' type="submit">Request</button>
-      </form>
-
-
-    </div>
-
-      {status}
+      <div className="statusStore">{status}</div>
 
     </div>
   );

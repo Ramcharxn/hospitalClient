@@ -4,7 +4,7 @@ import StockProduct from './StockProduct';
 export default function StockMain(props) {
   const { products, onRemove, discount, onRequest } = props;
   return (
-      <div className="TableBlock">
+      <div className="StoreMain">
         <table>
           <tr>
             <th>emergency</th>
