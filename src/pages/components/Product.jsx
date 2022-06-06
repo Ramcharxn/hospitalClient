@@ -10,6 +10,8 @@ export default function Product(props) {
       <td>{product.medName}</td>
       <td>{product.MRP}rs</td>
       <td>{product.tax}rs</td>
+
+      <td>{product.batch}</td>
       
       <td>{product.expDate.split('T')[0].split("-").reverse().join("-")}</td>
       <td>{product.quantity}</td>

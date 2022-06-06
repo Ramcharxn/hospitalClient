@@ -6,6 +6,7 @@ export default function CreateMed() {
   const [ medName, setMedName ] = useState('')
   const [ expDate, setExpDate ] = useState('')
   const [ quantity, setQuantity ] = useState(0)
+  const [ batch, setBatch ] = useState(1)
   const [ MRP, setMRP ] = useState(0)
   const [ tax, setTax ] = useState(0)
   const [ price, setPrice ] = useState(0)
@@ -18,6 +19,7 @@ export default function CreateMed() {
       setMedName(''),
       setExpDate(''),
       setQuantity(0),
+      setBatch(1),
       setMRP(0),
       setTax(0),
       setPrice(0),
@@ -33,6 +35,7 @@ export default function CreateMed() {
           <input type="text" required placeholder='Medcinie name' value={medName} onChange={e => setMedName(e.target.value)} />
           <input type="date" placeholder='expDate' value={expDate} onChange={e => setExpDate(e.target.value)} />
           Quantity: <input type="number" placeholder='quantity' value={quantity} onChange={e => setQuantity(e.target.value)} />
+          Batch: <input type="number" placeholder='Batch number' value={batch} onChange={e => setBatch(e.target.value)} />
           MRP: <input type="number" placeholder='MRP' value={MRP} onChange={e => setMRP(e.target.value)} />
           Tax:<input type="number" placeholder='tax' value={tax} onChange={e => setTax(e.target.value)} />
           Price:<input type="number" placeholder='price' value={parseFloat(MRP)+parseFloat(tax)} />

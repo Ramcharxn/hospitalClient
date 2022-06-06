@@ -10,6 +10,7 @@ export default function Main(props) {
             <th>Name</th>
             <th>MRP</th>
             <th>tax</th>
+            <th>Batch</th>
             <th>expireDate</th>
             <th>quantity</th>
             <th>price</th>
@@ -19,6 +20,8 @@ export default function Main(props) {
             <th>After discount</th>
             <th></th>
           </tr>
+
+          {console.log('main',products[0])}
           
           {products.map((product) => (
               <Product key={product._id} onRemove={onRemove} discount={discount} product={product} onAdd={onAdd}></Product>

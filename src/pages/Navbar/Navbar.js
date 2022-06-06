@@ -45,6 +45,7 @@ function Navbar() {
                     {/*Dropdown Items*/}
                     <Menu id='file' anchorEl={anchorEl} open={openMenu} onClose={handleClose}>
                         <MenuItem onClick={handleClose} ><Link to='/store-stock'>Store Stock</Link></MenuItem>
+                        <MenuItem onClick={handleClose} ><Link to='/bill-details'>Bill details</Link></MenuItem>
                         <MenuItem onClick={handleClose} ><Link to='/higherOfficial'>higher Official</Link></MenuItem>
                         <MenuItem onClick={handleClose} ><Link to='/OpPharmacyBilling'> OP Pharmacy Billing </Link> </MenuItem>
                         <MenuItem onClick={handleClose} ><Link to='/return'>IP Drug Returns</Link></MenuItem>

@@ -11,6 +11,7 @@ function StoreStock({ UID, onSub, error }) {
 
   const [products, setProducts] = useState([])
   const [medName, setMedName] = useState('')
+  const [medID, setMedID] = useState('')
   const [status, setStatus] = useState('')
   const [cartItems, setCartItems] = useState([]);
   const [allMed, setAllMed] = useState([]);
@@ -30,16 +31,18 @@ function StoreStock({ UID, onSub, error }) {
     setStatus('')
   }
 
-  if(status === "done"){
+  if (status === "done") {
     setTimeout(statusReset, 5000);
   }
+
+  // var i=-1;
 
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    axios.post('http://localhost:5000/getMed', { medName })
+    axios.post('http://localhost:5000/getMed', { medID })
       .then(res => (
-        res.data === 'No such medicine' ? error(res.data) : setProducts(arr => [...arr, res.data[0]])
+        res.data === 'No such medicine' ? error(res.data) : setProducts(arr => [...arr, res.data])
       ))
     setMedName('')
   }
@@ -59,7 +62,7 @@ function StoreStock({ UID, onSub, error }) {
   const medRequest = (e) => {
     e.preventDefault()
     axios.post('http://localhost:5000/medRequest', { products })
-      .then(res => (setStatus(res.data),setProducts([])))
+      .then(res => (setStatus(res.data), setProducts([])))
       .catch(err => console.log(err.message))
   }
 
@@ -67,7 +70,7 @@ function StoreStock({ UID, onSub, error }) {
     console.log("lollll", e.target.value);
     setRequestQuantity(e.target.value)
   };
-
+  console.log('stoer stock',products)
   console.log('cartItems', cartItems)
 
 
@@ -82,14 +85,15 @@ function StoreStock({ UID, onSub, error }) {
             <form>
               <div>
                 <div className='Box'>
-                <label>Medicine Name: </label>
-                <input
-                  className='InputBox'
-                  placeholder='Name'
-                  type="text" value={medName}
-                  onChange={e => setMedName(e.target.value)}
-                  onClick={() => setDisplay(!display)}
-                />
+                  <label>Medicine Name: </label>
+                  <input
+                    className='InputBox'
+                    placeholder='Name'
+                    type="text" value={medName}
+                    onChange={e => setMedName(e.target.value)}
+                    onClick={() => setDisplay(true)}
+                    onSelect={() => setDisplay(true)}
+                  />
                 </div>
 
                 <pre className='Box'>
@@ -97,7 +101,32 @@ function StoreStock({ UID, onSub, error }) {
                   <input className='InputBox' type="number" placeholder='amount' min="0" onChange={e => setQuantityFilter(e.target.value)} />
                 </pre>
 
-                <div className='displayAllMeds'>
+                {console.log('erorrrrrrrrrrrrrrrrr',quantityFilter)}
+
+
+                {
+                  display &&
+                  allMed.map((m) => {
+                    return <div className='displayAllMeds' key={m._id}>
+                      {
+                        m.medName.includes(medName)  ?
+                          (m.quantity < quantityFilter || quantityFilter == '' || quantityFilter == 0)
+                          //  && (i++ && i < 7)
+                            ?
+                             
+                            <p className='MedList'
+                              onClick={() => (setMedName(m.medName), setMedID(m._id), setDisplay(false))}>
+                              {m.medName} batch({m.batch})
+                            </p> :
+                            null :
+                          null
+                      }
+                    </div>
+                  })
+                }
+
+
+                {/* <div className='displayAllMeds'>
                   {
                     medName == '' && display && quantityFilter != 0 &&
                     <div>
@@ -143,6 +172,9 @@ function StoreStock({ UID, onSub, error }) {
 
                   }
 
+                  {
+                    allMed.map(m => console.log(m.medName))
+                  }
 
                   {
                     medName !== '' && display && quantityFilter == 0 &&
@@ -160,7 +192,7 @@ function StoreStock({ UID, onSub, error }) {
                       )}
                     </div>
                   }
-                </div>
+                </div> */}
 
 
 

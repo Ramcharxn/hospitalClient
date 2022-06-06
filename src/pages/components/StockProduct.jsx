@@ -14,6 +14,7 @@ const handleClick = (e) => {
     <tr>
       <td><input className='CheckBox' type="checkbox" onClick={handleClick} /></td>
       <td>{product.medName}</td>
+      <td>{product.batch}</td>
       <td>{product.expDate.split('T')[0].split("-").reverse().join("-")}</td>
       <td>{product.quantity}</td> 
       <td>

@@ -8,6 +8,7 @@ function PaymentMain({ UID, onSub, error }) {
 
   const [products, setProducts] = useState([])
   const [medName, setMedName] = useState('')
+  const [medID, setMedID] = useState('')
   const [service, setService] = useState(0)
   const [cartItems, setCartItems] = useState([]);
   const [allMed, setAllMed] = useState([]);
@@ -28,17 +29,21 @@ function PaymentMain({ UID, onSub, error }) {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    axios.post('http://localhost:5000/getMed', { medName })
+    axios.post('http://localhost:5000/getMed', { medID })
       // .then(res => setProducts(arr => [...arr,res.data[0]]))
       .then(res => (
-        res.data === 'No such medicine' ? error(res.data) : setProducts(arr => [...arr, res.data[0]])
+        res.data === 'No such medicine' ? error(res.data) : setProducts(arr => [...arr, res.data])
       ))
 
     setMedName('')
   }
 
-  console.log(products)
+  var i = 0;
+
+  console.log('product',products)
   console.log(UID)
+
+  console.log(allMed)
 
 
   const onAdd = (product, addVal) => {
@@ -87,30 +92,29 @@ function PaymentMain({ UID, onSub, error }) {
               placeholder='Medicine Name'
               type="text" value={medName}
               onChange={e => setMedName(e.target.value)}
-              onClick={() => setDisplay(!display)}
+              onClick={() => setDisplay(true)}
+              onSelect={() => setDisplay(true)}
             // onClick={setDisplay(!display)}
             />
 
             {console.log('medNameeeeeeeee', medName)}
             {
-              medName !== '' && display &&
-              // <select className='selectBox' value={medName} onChange={e => setMedName(e.target.value)}>
-              <div>
-                {allMed.map((m, i) => {
-                  if (m.medName.includes(medName)) {
-                    // if(m.medName.startsWith(medName)){
-                    return <div
-                      onClick={() => (setMedName(m.medName), setDisplay(!display))}
-                      key={i}
-                    >
-                      <p style={{ cursor: 'pointer' }}>{m.medName}</p>
+                  display &&
+                  allMed.map((m) => {
+                    return <div className='displayAllMeds' key={m._id}>
+                      {
+                        m.medName.includes(medName)  ?
+                          // (i++ && i < 7) ?
+                            <p className='MedList'
+                              onClick={() => (setMedName(m.medName), setMedID(m._id), setDisplay(false))}>
+                              {m.medName} batch({m.batch})
+                            </p> :
+                            // null :
+                          null
+                      }
                     </div>
-                  }
+                  })
                 }
-                )}
-              </div>
-
-            }
 
           </div>
 
@@ -130,15 +134,15 @@ function PaymentMain({ UID, onSub, error }) {
       <form onSubmit={MedDetails}>
         <label>Service : </label>
         <select className='selectBox' value={service} onChange={e => setService(e.target.value)}>
-          <option value="0">None</option>
-          <option value="10">Transport</option>
-          <option value="20">staff</option>
-          <option value="30">HOD</option>
-          <option value="40">student</option>
+          <option value="None">None</option>
+          <option value="Transport">Transport</option>
+          <option value="staff">staff</option>
+          <option value="HOD">HOD</option>
+          <option value="student">student</option>
         </select>
 
         {console.log(service)}
-        
+
         <div ref={componentRef} className="row">
           <Main products={products} discount={service} onAdd={onAdd} onRemove={onRemove} ></Main>
         </div>

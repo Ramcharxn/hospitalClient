@@ -13,6 +13,7 @@ import HigherOff from "./pages/HigherOff"
 import './App.css'
 import MainStore from "./pages/MainStore";
 import GRN from "./pages/GRN";
+import BillDetails from "./pages/BillDetails";
 
 export default function App() {
   return (
@@ -21,6 +22,7 @@ export default function App() {
       <Routes>
           <Route path="/" element={<Header />} />
           <Route path='/store-stock' element={<StoreStock />} />
+          <Route path='/bill-details' element={<BillDetails />} />
           <Route path='/higherOfficial' element={<HigherOff />} />
           <Route path='/OpPharmacyBilling' element={<Payment />} />
           <Route path='/return' element={<ReturnPage />} />

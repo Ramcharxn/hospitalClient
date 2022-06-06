@@ -9,11 +9,14 @@ export default function StockMain(props) {
           <tr>
             <th>emergency</th>
             <th>Name</th>
-            <th>expireDate</th>
+            <th>Batch</th>
+            <th>expire Date</th>
             <th>quantity</th>
             <th>required</th>
             <th></th>
           </tr>
+
+          {console.log('products',products)}
           
           {products.map((product) => (
               <StockProduct key={product._id} onRemove={onRemove} discount={discount} product={product} onRequest={onRequest}></StockProduct>
