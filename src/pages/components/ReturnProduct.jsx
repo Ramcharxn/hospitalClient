@@ -25,6 +25,7 @@ export default function ReturnProduct(props) {
       <td>{product.expDate.split('T')[0].split("-").reverse().join("-")}</td>
       <td>{product.qty}</td>
       <td>{product.price}rs</td>
+      <td>{product.batch}</td>
       <td>{service}%</td>
       <td>{product.price - (product.price * service / 100)}rs</td>
       <td>{((product.price - (product.price * service / 100))*parseInt(product.qty)).toFixed(2)}rs</td>

@@ -31,6 +31,7 @@ export default function ReturnMain(props) {
             <th>expireDate...</th>
             <th>quantity purchased...</th>
             <th>price...</th>
+            <th>batch...</th>
             <th>discount...</th>
             <th>price after discount...</th>
             <th>Item Cost....</th>

@@ -22,9 +22,9 @@ export default function ReturnPage() {
       }
 
       const handleClick = () => {
-          console.log('clicked')
+          console.log(console.log(medArray))
         axios.post('http://localhost:5000/returnMed',{medArray})
-        .then(res => console.log(res.data))
+        .then(() => window.location.reload())
         .catch(err => console.log(err.message))
       }
 
