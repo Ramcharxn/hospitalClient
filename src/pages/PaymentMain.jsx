@@ -124,7 +124,7 @@ function PaymentMain({ UID, onSub, error }) {
                   allMed.map((m) => {
                     return <div className='displayAllMeds' key={m._id}>
                       {
-                        m.medName.includes(medName) && i<5 && i++  ?
+                        m.medName.includes(medName) ?
                           // (i++ && i < 7) ?
                             
                             <p className='MedList'
@@ -140,7 +140,7 @@ function PaymentMain({ UID, onSub, error }) {
 
           </div>
 
-          <button className='btn' type="submit">search</button>
+          <button className='btnn' type="submit">search</button>
         </form>
 
         <Basket
@@ -172,7 +172,7 @@ function PaymentMain({ UID, onSub, error }) {
 
         {total} */}
 
-        <button onClick={handlePrint} className='btn' type="submit">CheckOut</button>
+        <button onClick={handlePrint} className='btnn' type="submit">CheckOut</button>
       </form>
 
 

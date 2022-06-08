@@ -72,7 +72,7 @@ export default function Payment() {
               <label>Phone : </label>
               <input type="number" value={phoneNum} onChange={e => setPhoneNum(e.target.value)} placeholder="Phone NUmber" />
             </div>
-            <button className='btn' type="submit">Load</button>
+            <button className='btnn' type="submit">Load</button>
           </div>
         </form>
 

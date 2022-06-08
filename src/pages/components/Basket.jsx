@@ -3,10 +3,11 @@ import React, { useState } from 'react';
 export default function Basket(props) {
   const { cartItems, onAdd, onRemove, discount } = props;
   cartItems.reduce((a,c) => console.log('quantity in basket',c.discount),0)
-  const itemsPrice = cartItems.reduce((a, c) => a + (c.qty * c.price) - (c.qty * c.price * c.discount/100), 0);
+  const totalPrice = cartItems[0] ? cartItems.reduce((a, c) => a + (c.qty * c.price) - (c.qty * c.price * c.discount/100), 0) : 0
   // const taxPrice = itemsPrice * 0.14;
 //   const shippingPrice = itemsPrice > 2000 ? 0 : 20;
-  const totalPrice = itemsPrice;
+
+console.log((totalPrice))
 
 
   return (
@@ -61,7 +62,8 @@ export default function Basket(props) {
                 <strong>Total Price</strong>
               </div>
               <div className="col-1 text-right">
-                <strong>{(totalPrice).toFixed(2)}rs</strong>
+                {/* <strong>{typeof(totalPrice )}</strong> */}
+                <strong>{(isNaN(totalPrice)) ? 0 : totalPrice.toFixed(2)}rs</strong>
               </div>
             </div>
             {/* <div className="row">
