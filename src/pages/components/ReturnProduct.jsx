@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 
 export default function ReturnProduct(props) {
-  var { product, service } = props;
+  var { product } = props;
+
+  console.log(product)
   const [returnQuantity, setReturnQuantity] = useState(0)
 
     product.returnQuantity = returnQuantity
-   product.returnAmount = (returnQuantity*product.price) - (returnQuantity*product.price * service /100)
+   product.returnAmount = (returnQuantity*product.price) - (returnQuantity*product.price * product.discount /100)
    console.log(product.returnQuantity)
 //     console.log('total',total)
 //   const handleReturnQuantity =(e) =>{
@@ -26,9 +28,9 @@ export default function ReturnProduct(props) {
       <td>{product.qty}</td>
       <td>{product.price}rs</td>
       <td>{product.batch}</td>
-      <td>{service}%</td>
-      <td>{product.price - (product.price * service / 100)}rs</td>
-      <td>{((product.price - (product.price * service / 100))*parseInt(product.qty)).toFixed(2)}rs</td>
+      <td>{product.discount}%</td>
+      <td>{product.price - (product.price * product.discount / 100)}rs</td>
+      <td>{((product.price - (product.price * product.discount / 100))*parseInt(product.qty)).toFixed(2)}rs</td>
 
       {/* <td>{product.price * product.quantity}</td> */}
 
@@ -38,7 +40,7 @@ export default function ReturnProduct(props) {
         {/* <input type="number" id="quantity" name="quantity" min="1" max="5" /> */}
       </td>
 
-      <td>{(returnQuantity*product.price) - (returnQuantity*product.price * service /100)}</td>    
+      <td>{(returnQuantity*product.price) - (returnQuantity*product.price * product.discount /100)}</td>    
     </tr>
 
   );

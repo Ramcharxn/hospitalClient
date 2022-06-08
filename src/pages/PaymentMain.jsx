@@ -9,10 +9,12 @@ function PaymentMain({ UID, onSub, error }) {
   const [products, setProducts] = useState([])
   const [medName, setMedName] = useState('')
   const [medID, setMedID] = useState('')
-  const [service, setService] = useState(0)
+  const [service, setService] = useState('None')
+  const [disPercent, setDisPercent] = useState(0)
   const [cartItems, setCartItems] = useState([]);
   const [allMed, setAllMed] = useState([]);
   const [display, setDisplay] = useState(false)
+  const [total, setTotal] = useState(0)
 
   const componentRef = useRef()
   const handlePrint = useReactToPrint({
@@ -41,22 +43,28 @@ function PaymentMain({ UID, onSub, error }) {
   var i = 0;
 
   console.log('product',products)
-  console.log(UID)
+  console.log('discount', disPercent)
 
   console.log(allMed)
 
+  const disVal = (val) => {
+    setDisPercent(val)
+  }
 
-  const onAdd = (product, addVal) => {
+
+  const onAdd = (product, addVal, discount) => {
     // e.preventDefault()
+
+    console.log('discount percent',discount)
     const exist = cartItems.find((x) => x._id === product._id);
     if (exist) {
       setCartItems(
         cartItems.map((x) =>
-          x._id === product._id ? { ...exist, qty: addVal } : x
+          x._id === product._id ? { ...exist, qty: addVal, discount: discount } : x
         )
       );
     } else {
-      setCartItems([...cartItems, { ...product, qty: 1 }]);
+      setCartItems([...cartItems, { ...product, qty: 1 , discount: discount}]);
     }
   };
   const onRemove = (product) => {
@@ -65,17 +73,30 @@ function PaymentMain({ UID, onSub, error }) {
     setProducts(products.filter((x) => x._id !== product._id))
   };
 
-  console.log('cartItems', cartItems)
+  cartItems.map(cartItem => console.log('cartItem',cartItem))
+  products.map(product => console.log(product))
+
+  // console.log('cartItems', cartItems[0].discount)
+
+  // console.log('##############', products[0].discount)
 
   const MedDetails = (e) => {
     e.preventDefault()
 
-    axios.post('http://localhost:5000/checkout', { UID, cartItems, service })
+    axios.post('http://localhost:5000/checkout', { UID, cartItems: products, disPercent })
       .then(res => (error(res.data), onSub()))
       .catch(err => console.log(err.message))
 
 
   }
+
+  // const findSum = (e) => {
+  //   e.preventDefault()
+  //   setTotal(0)
+  //   products.map(product => {
+  //     setTotal(total => (total + parseFloat(product.cost)))  
+  //   })
+  // }
 
 
   return (
@@ -103,11 +124,12 @@ function PaymentMain({ UID, onSub, error }) {
                   allMed.map((m) => {
                     return <div className='displayAllMeds' key={m._id}>
                       {
-                        m.medName.includes(medName)  ?
+                        m.medName.includes(medName) && i<5 && i++  ?
                           // (i++ && i < 7) ?
+                            
                             <p className='MedList'
                               onClick={() => (setMedName(m.medName), setMedID(m._id), setDisplay(false))}>
-                              {m.medName} batch({m.batch})
+                              {m.medName} batch({m.batch} {console.log(i)})
                             </p> :
                             // null :
                           null
@@ -122,8 +144,7 @@ function PaymentMain({ UID, onSub, error }) {
         </form>
 
         <Basket
-          discount={service}
-          cartItems={cartItems}
+          cartItems={products}
           onAdd={onAdd}
           onRemove={onRemove}
         ></Basket>
@@ -144,8 +165,12 @@ function PaymentMain({ UID, onSub, error }) {
         {console.log(service)}
 
         <div ref={componentRef} className="row">
-          <Main products={products} discount={service} onAdd={onAdd} onRemove={onRemove} ></Main>
+          <Main products={products} service={service} disVal={disVal} onAdd={onAdd} onRemove={onRemove} ></Main>
         </div>
+
+        {/* <button onClick={findSum}>Total</button>
+
+        {total} */}
 
         <button onClick={handlePrint} className='btn' type="submit">CheckOut</button>
       </form>

@@ -43,7 +43,7 @@ export default function ReturnMain(props) {
           </tr>
 
           {medArray.cartItems.map((product, i) => (
-              <ReturnProduct key={product._id} service={medArray.service} product={product} ></ReturnProduct>
+              <ReturnProduct key={product._id} product={product} ></ReturnProduct>
           ))}
 
           

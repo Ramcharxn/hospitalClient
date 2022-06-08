@@ -14,10 +14,7 @@ export default function HigherOff() {
   },[])
 
   const onConfirm = () => {
-
-    setProducts(data.filter((x) => x.checked==true))
-    setData(data.filter((x) => x.checked !== true))
-   // console.log(data.filter((x) => x.checked==true))
+ // console.log(data.filter((x) => x.checked==true))
 
     // console.log(data)
 
@@ -31,22 +28,31 @@ export default function HigherOff() {
     // setData(data.filter((x) => (x._id == product._id) && product.checked == true))
     // console.log(product._id)
     // console.log(data)
+
+
+    setProducts(data.filter((x) => x.checked==true))
+    setData(data.filter((x) => x.checked !== true))
+
+    axios.post('http://localhost:5000/medRequest', { products: data.filter((x) => x.checked==true) })
+      .then(res => (setProducts([])))
+      .catch(err => console.log(err.message))
+
+    // setTimeout(() => onConfirmed(), 2000);
+  
   };
 
   
-  const onConfirmed = () => {
-  console.log('halo',products)
-  axios.post('http://localhost:5000/medRequest', { products })
-      .then(res => (setProducts([])))
-      .catch(err => console.log(err.message))
-  }
+  // const onConfirmed = () => {
+  // console.log('halo',products)
+  
+  // }
 
 
   return (
     <div>
 
     <button type='submit' onClick={onConfirm}>click</button>
-    <button type='submit' onClick={onConfirmed}>clicked</button>
+    {/* <button type='submit' onClick={onConfirmed}>clicked</button> */}
 
       <table>
           <tr>
