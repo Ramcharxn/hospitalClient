@@ -3,6 +3,7 @@ import StockMain from './components/StockMain';
 import Basket from './components/Basket';
 import { useState, useEffect } from 'react';
 import axios from 'axios'
+import '../App.css'
 
 function StoreStock({ UID, onSub, error }) {
 
@@ -198,7 +199,7 @@ function StoreStock({ UID, onSub, error }) {
 
 
               </div>
-              <button className='btn' type="submit" onClick={handleSubmit}>search</button>
+              <button className='btnn' type="submit" onClick={handleSubmit}>search</button>
             </form>
           </div>
 
@@ -211,7 +212,7 @@ function StoreStock({ UID, onSub, error }) {
               <div className="row">
                 <StockMain products={products} onRemove={onRemove} onRequest={onRequest} ></StockMain>
               </div>
-              <button className='btn btn2' type="submit">Request</button>
+              <button className='btnn btn2' type="submit">Request</button>
             </form>
           </div>
         </div>

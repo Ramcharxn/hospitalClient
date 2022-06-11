@@ -1,6 +1,7 @@
 import axios from 'axios'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react'
+import jwt from 'jwt-decode'
 
 export default function CreateUser() {
   const [ UID, setUID ] = useState('')
@@ -13,6 +14,16 @@ export default function CreateUser() {
   const [ city, setCity ] = useState('')
   const [ state, setState ] = useState('')
   const [ country, setCountry ] = useState('')
+
+  useEffect(() => {
+    const token = localStorage.getItem("token")
+    console.log(token)
+    var user
+    if(token) {
+      user = jwt(token)
+      console.log(user)
+  }
+  })
 
 
   const handleSubmit = (e) => {
