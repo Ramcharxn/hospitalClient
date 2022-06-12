@@ -19,6 +19,10 @@ function Navbar() {
         setAnchorEl(null);
     }
 
+    const handleButton = () => {
+        window.location.href = "/main"
+    }
+
   return (
     <Box elevation={2} sx={{backgroundColor:"white"}}>
         <Toolbar>
@@ -51,6 +55,8 @@ function Navbar() {
                         <MenuItem onClick={handleClose} ><Link to='/return'>IP Drug Returns</Link></MenuItem>
                         <MenuItem onClick={handleClose} ><Link to='/main_store'>Store</Link></MenuItem>
                         <MenuItem onClick={handleClose} ><Link to='/grn'>GRN (Goods Receiving Note)</Link></MenuItem>
+                        <MenuItem onClick={handleClose} ><Link to='/role'>Role</Link></MenuItem>
+                        <MenuItem onClick={handleClose} ><Link to='/unrole'>UnRole</Link></MenuItem>
                         <MenuItem onClick={handleClose} >Branch Issues</MenuItem>
                         <MenuItem onClick={handleClose} >Close Shift</MenuItem>
                         <MenuItem onClick={handleClose} >EXIT</MenuItem>
@@ -74,7 +80,7 @@ function Navbar() {
 
                 {/* button links*/}
                 <Box sx={{ display:"flex", justifyContent:'center', alignItems:'center'}}>
-                    <Button sx={{backgroundColor:'primary'}} disableElevation variant='contained'>Account</Button>
+                    <Button onClick={handleButton} sx={{backgroundColor:'primary'}} disableElevation variant='contained'>Account</Button>
                     <IconButton>
                         <Badge>
                             <AccountCircleIcon color='primary' fontSize='large'/>  

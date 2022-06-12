@@ -19,6 +19,7 @@ import SignUp from './pages/SignUp'
 import Login from './pages/Login'
 import Role from './pages/Role'
 import Main from './pages/Main'
+import UnRole from "./pages/UnRole";
 
 
 export default function App() {
@@ -28,6 +29,8 @@ export default function App() {
   if(token) {
     user = jwt(token)
     console.log(user)
+
+    console.log(user ? "true" : "false")
   }
 
   return (
@@ -130,8 +133,18 @@ export default function App() {
 
 
         { user && <Route path='/main' exact element={<Main />} /> }
-        <Route path='/signup' exact element={<SignUp />} />
-        <Route path='/login' exact element={<Login />} />
+
+          {user ? 
+            <Route path='/signup' exact element={<Navigate replace to="/main" />} /> : 
+            <Route path='/signup' exact element={<SignUp />} /> 
+          }
+
+          {user ? 
+            <Route path='/login' exact element={<Navigate replace to="/main" />} /> : 
+            <Route path='/login' exact element={<Login />} />
+          }
+
+        {/* <Route path='/login' exact element={<Login />} /> */}
         {/* { user && (user.user.role == "salesman" || user.role == "admin") && <Route path='/salesman' exact element={<Salesman />} />}
         { user && user.user.role == "senior" && <Route path='/senior' exact element={<Senior />} />}
         { user && user.user.role == "admin" && <Route path='/admin' exact element={<Admin />} />} */}
@@ -166,6 +179,14 @@ export default function App() {
           <Route path='/role' exact element={<Role />} /> : 
           <Route path='/role' exact element={<Navigate replace to="/main" />} /> : 
           <Route path='/role' exact element={<Navigate replace to="/login" />} />
+        }
+
+{
+          user ?
+          user.user.role == "admin" ? 
+          <Route path='/unrole' exact element={<UnRole />} /> : 
+          <Route path='/unrole' exact element={<Navigate replace to="/main" />} /> : 
+          <Route path='/unrole' exact element={<Navigate replace to="/login" />} />
         }
         
         {/* <Route path='/role' exact element={<Role />} /> */}

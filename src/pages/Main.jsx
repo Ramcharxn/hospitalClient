@@ -1,9 +1,11 @@
 import React from 'react'
 import { useEffect } from 'react'
 import jwt from 'jwt-decode'
-import axios from 'axios'
+import { useState } from 'react'
 
 export default function Main() {
+
+  const [user, setUser] = useState([])
 
     const handleLogout = () => {
         localStorage.removeItem("token")
@@ -17,16 +19,22 @@ export default function Main() {
       // .then(res => console.log(res.body))
       // .catch(err => console.log(err.message))
       
-      const user = jwt(token)
-      console.log(user.user.role)
+      setUser(jwt(token))
+      // console.log(user.user.role)
     },[])
 
   return (
     <div>
-        <nav>
-          
-            <button onClick={handleLogout}>Logout</button>
-        </nav>
+        {
+          user.user && 
+          <div>
+            <p>user Name : {user.user.firstName} {user.user.lastName}</p>
+            <p>user ID : {user.user.userId}</p>
+            <p>user Role : {user.user.role}</p>
+          </div>
+        }
+        
+        <button onClick={handleLogout}>Logout</button>
     </div>
   )
 }
