@@ -463,11 +463,25 @@ import React, { useState, useRef, useEffect } from 'react'
 import { useReactToPrint } from 'react-to-print'
 import axios from 'axios'
 import { Link } from 'react-router-dom';
+import jwt from 'jwt-decode'
 import ReactToPrint from "react-to-print";  
 
 
 function PrintOutLayout({patient, detail}) {
   //   const [patient, setPatient] = useState([]);
+    const [user, setUser] = useState('')
+  useEffect(() => {
+    const token = localStorage.getItem("token")
+
+    // axios.post('http://localhost:5000/api/token',{token})
+    // .then(res => console.log(res.body))
+    // .catch(err => console.log(err.message))
+    
+    setUser(jwt(token))
+    // console.log(user.user.role)
+  },[])
+
+  console.log('user',user)
 
     const total = detail.reduce((a, c) => a + c.price * c.qty, 0);
 
@@ -534,7 +548,8 @@ function PrintOutLayout({patient, detail}) {
                 
                  <p>Total: {total}</p>    
                  
-      
+                 {user && <p>salesman name : {user.user.firstName} {user.user.lastName}</p>}
+               
               <div className="row">
                   <div className="col-12 line"></div>
               </div>
@@ -586,6 +601,7 @@ function PaymentMain({ UID, onSub, error }) {
   const [allMed, setAllMed] = useState([]);
   const [display, setDisplay] = useState(false)
   const [total, setTotal] = useState(0)
+  const [payType, setPayType] = useState('cash')
   const [paymentSuccess, setPaymentSuccess] = useState(false)
 
   const [patient, setPatient] = useState([])
@@ -658,20 +674,17 @@ function PaymentMain({ UID, onSub, error }) {
   products.map(product => console.log(product))
 
 
-  const MedDetails = (event) => {
-    event.preventDefault()
-    console.log('event 3', event)
-
-    console.log('inside meddetails')
+  const MedDetails = (e) => {
+    e.preventDefault()
 
     axios.post('http://localhost:5000/checkout', { UID, cartItems: products, disPercent })
-      .then(res => (error(res.data), onSub()))
+      .then(res => error(res.data))
       .catch(err => console.log(err.message))
-
-      return <Example detail={products} patient={patient}/>
   }
 
-
+const handleClear = () => {
+  window.location.reload()
+}
 
   // payment
 
@@ -681,83 +694,76 @@ function PaymentMain({ UID, onSub, error }) {
   }
 
   const handleCheckout = (e) => {
-    console.log('event 4',e)
     e.preventDefault()
-    const event = e
-    console.log('event 2' ,event)
-    console.log('loadfunction')
-    setPaymentSuccess(true)
-    console.log(paymentSuccess)
-
-    const script = document.createElement('script');
-    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
-    script.onerror = () => {
-      alert('Razorpay SDK failed to load. Are you online?');
-    };
-    script.onload = async () => {
-      try {
-        //setLoading(true);
-
-        // MedDetails(e)
-        const result = await axios.post('http://localhost:5000/create-order', {
-          amount: total + '00',
-        });
-        const { amount, id: order_id, currency } = result.data;
-        const {
-          data: { key: razorpayKey },
-        } = await axios.get('http://localhost:5000/get-razorpay-key');
-
-        const options = {
-          key: razorpayKey,
-          amount: amount.toString(),
-          currency: currency,
-          name: 'example name',
-          description: 'example transaction',
-          order_id: order_id,
-
-          handler: async function (response) {
-            console.log('first', amount, response)
-            console.log('inside handler')
-            const result = await axios.post('http://localhost:5000/pay-order', {
-              amount: amount,
-              razorpayPaymentId: response.razorpay_payment_id,
-              razorpayOrderId: response.razorpay_order_id,
-              razorpaySignature: response.razorpay_signature,
-            })
-            .then(MedDetails(event))
-            .catch(err => console.log(err))
-
-
-            alert(result.data.msg);
-            console.log('before meddetails')
-            //fetchOrders();
-          },
-          prefill: {
+    if (payType === "cash") {
+      MedDetails(e)
+    } else {
+      console.log('loadfunction')
+      setPaymentSuccess(true)
+      console.log(paymentSuccess)
+  
+      const script = document.createElement('script');
+      script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+      script.onerror = () => {
+        alert('Razorpay SDK failed to load. Are you online?');
+      };
+      script.onload = async () => {
+        try {
+          //setLoading(true);
+          const result = await axios.post('http://localhost:5000/create-order', {
+            amount: total + '00',
+          });
+          const { amount, id: order_id, currency } = result.data;
+          const {
+            data: { key: razorpayKey },
+          } = await axios.get('http://localhost:5000/get-razorpay-key');
+  
+          const options = {
+            key: razorpayKey,
+            amount: amount.toString(),
+            currency: currency,
             name: 'example name',
-            email: 'email@example.com',
-            contact: '6382944040',
-          },
-          notes: {
-            address: 'example address',
-          },
-          theme: {
-            color: '#80c0f0',
-          },
-        };
-
-        //setLoading(false);
-        const paymentObject = new window.Razorpay(options);
-        paymentObject.open();
-
-        console.log('event',e)
-
-
-      } catch (err) {
-        alert(err);
-        //setLoading(false);
-      }
-    };
-    document.body.appendChild(script);
+            description: 'example transaction',
+            order_id: order_id,
+  
+            handler: async function (response) {
+              console.log('first', amount, response)
+              console.log('inside handler')
+              const result = await axios.post('http://localhost:5000/pay-order', {
+                amount: amount,
+                razorpayPaymentId: response.razorpay_payment_id,
+                razorpayOrderId: response.razorpay_order_id,
+                razorpaySignature: response.razorpay_signature,
+              });
+              alert(result.data.msg);
+              console.log('before meddetails')
+              MedDetails(e)
+              //fetchOrders();
+            },
+            prefill: {
+              name: 'example name',
+              email: 'email@example.com',
+              contact: '6382944040',
+            },
+            notes: {
+              address: 'example address',
+            },
+            theme: {
+              color: '#80c0f0',
+            },
+          };
+  
+          //setLoading(false);
+          const paymentObject = new window.Razorpay(options);
+          paymentObject.open();
+        } catch (err) {
+          alert(err);
+          //setLoading(false);
+        }
+      };
+      document.body.appendChild(script);
+    }
+    
   }
 
   return (
@@ -814,7 +820,7 @@ function PaymentMain({ UID, onSub, error }) {
 
       {/* <Header countCartItems={cartItems.length}></Header> */}
 
-      <div>
+      <form>
         <label>Service : </label>
         <select className='selectBox' value={service} onChange={e => setService(e.target.value)}>
           <option value="None">None</option>
@@ -830,14 +836,24 @@ function PaymentMain({ UID, onSub, error }) {
           <Main products={products} service={service} disVal={disVal} onAdd={onAdd} onRemove={onRemove} ></Main>
         </div>
 
-        <button onClick={handleCheckout} className='btnn'>CheckOut</button>
+
+        <div onChange={e => setPayType(e.target.value)}>
+        <input type="radio" checked="checked" value="cash" name="gender" /> cash
+        <input type="radio" value="card" name="gender" /> card
       </div>
+
+        <button onClick={handleCheckout} className='btnn'>CheckOut</button>
+      </form>
 
       {/* <div>
       {paymentSuccess &&
         <Example />
       }
       </div> */}
+
+
+      <button onClick={handleClear}>clear screen</button>
+
       <Example detail={products} patient={patient}/>
       
     </div>

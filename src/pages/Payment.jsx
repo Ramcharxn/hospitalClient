@@ -113,7 +113,7 @@ export default function Payment() {
           <PaymentMain
             UID={UIDSent}
             error={err => setError(err)}
-            onSub={res => (
+            onSub={() => (
               setUID(''),
               // setStatus2(''),
               setName(''),
