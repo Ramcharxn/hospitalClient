@@ -30,8 +30,9 @@ function Navbar() {
 
                 {/* Logo */}
                 <Box>
-                    <IconButton>
-                        <MenuOutlinedIcon />
+                <IconButton style={{}}>
+                        {/* <MenuOutlinedIcon /> */}
+                        <Link to="/"><img src={"./images/sims-background.png"} style={{height: "50px"}} ></img></Link> 
                     </IconButton>
                 </Box>
 

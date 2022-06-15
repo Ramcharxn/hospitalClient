@@ -14,7 +14,7 @@ export default function CreateMed() {
   const handleSubmit = (e) => {
     e.preventDefault()
 
-    axios.post('http://localhost:5000/medicine',{medName, expDate, quantity, MRP, tax, price: parseFloat(MRP)+parseFloat(tax)})
+    axios.post('http://localhost:5000/medicine',{medName, expDate, quantity, batch, MRP, tax, price: parseFloat(MRP)+parseFloat(tax)})
     .then(
       setMedName(''),
       setExpDate(''),

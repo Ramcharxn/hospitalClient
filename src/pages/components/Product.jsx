@@ -47,7 +47,7 @@ export default function Product(props) {
             {/* <div className="col-2">{product.medName}</div> */}
               
       <td>
-        <input required min='0' className='ProdInputBox' type="number" onChange={e => ((onAdd(product, e.target.value, service !== "None" ? cost > 100 ? cost > 1000 ? 20 : 10 : 0 : 0), setQuantity(e.target.value)), product.qty = e.target.value)} />
+        <input required max={product.quantity} min='0' className='ProdInputBox' type="number" onChange={e => ((onAdd(product, e.target.value, service !== "None" ? cost > 100 ? cost > 1000 ? 20 : 10 : 0 : 0), setQuantity(e.target.value)), product.qty = e.target.value)} />
       </td>
             
               {/* <button onClick={() => onAdd(item)} className="add">
